@@ -12,7 +12,7 @@ import { useAuth } from '../hooks/useAuth';
 
 const MyBankPage: React.FC = () => {
   const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { user, session, logout } = useAuth();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -47,7 +47,8 @@ const MyBankPage: React.FC = () => {
           topic: q.topic,
           isPublic: q.is_public,
           createdAt: q.created_at,
-          authorId: q.author_id
+          authorId: q.author_id,
+          storageRef: q.storage_ref
         }));
         setQuestions(userQuestions);
       }
@@ -89,16 +90,21 @@ const MyBankPage: React.FC = () => {
           const encryptionKey = 'user-specific-strong-key';
           const encryptedContent = await encryptionService.encrypt(JSON.stringify(extractedData), encryptionKey);
           
+          if (!session?.provider_token) {
+            throw new Error('No Google provider token found. Please log in with Google.');
+          }
+
           const driveFile = await googleDriveService.uploadFile(
             `${selectedFile.name}.encrypted`,
-            encryptedContent
+            encryptedContent,
+            session.provider_token
           );
           
           const questionsToInsert = extractedData.map(q => ({
             ...q,
             is_public: false,
             author_id: user.id,
-            // storage_ref: driveFile.id,
+            storage_ref: driveFile.id,
           }));
 
           const { data: insertedQuestions, error: insertError } = await supabase
@@ -120,7 +126,8 @@ const MyBankPage: React.FC = () => {
                 topic: q.topic,
                 isPublic: q.is_public,
                 createdAt: q.created_at,
-                authorId: q.author_id
+                authorId: q.author_id,
+                storageRef: q.storage_ref
             }));
             setQuestions(prev => [...newQuestions, ...prev]);
           }

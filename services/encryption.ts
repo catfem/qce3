@@ -1,31 +1,42 @@
 
-// This is a placeholder for a real encryption service.
-// In a production app, you would use a robust library like crypto-js or the Web Crypto API.
-// Keys should be managed securely, for example, derived from user passwords or stored in a secure manner.
+const iv = new Uint8Array(12); // Initialization vector.
+
+async function getKey(secret: string): Promise<CryptoKey> {
+  const encoder = new TextEncoder();
+  const keyData = encoder.encode(secret);
+  const hash = await crypto.subtle.digest('SHA-256', keyData);
+  return crypto.subtle.importKey('raw', hash, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+}
 
 const encrypt = async (data: string, key: string): Promise<string> => {
-  console.log(`[STUB] Encrypting data with key: ${key}`);
-  // In a real implementation:
-  // const encrypted = CryptoJS.AES.encrypt(data, key).toString();
-  // return encrypted;
+  const cryptoKey = await getKey(key);
+  const encodedData = new TextEncoder().encode(data);
+  const encryptedData = await crypto.subtle.encrypt(
+    {
+      name: 'AES-GCM',
+      iv: iv,
+    },
+    cryptoKey,
+    encodedData
+  );
   
-  // For demonstration, we'll just base64 encode it. THIS IS NOT SECURE.
-  return btoa(`encrypted_payload:${data}`);
+  const buffer = new Uint8Array(encryptedData);
+  return btoa(String.fromCharCode.apply(null, Array.from(buffer)));
 };
 
 const decrypt = async (encryptedData: string, key: string): Promise<string> => {
-  console.log(`[STUB] Decrypting data with key: ${key}`);
-  // In a real implementation:
-  // const bytes  = CryptoJS.AES.decrypt(encryptedData, key);
-  // const originalText = bytes.toString(CryptoJS.enc.Utf8);
-  // return originalText;
+  const cryptoKey = await getKey(key);
+  const buffer = new Uint8Array(Array.from(atob(encryptedData), c => c.charCodeAt(0)));
+  const decryptedData = await crypto.subtle.decrypt(
+    {
+      name: 'AES-GCM',
+      iv: iv,
+    },
+    cryptoKey,
+    buffer
+  );
 
-  // For demonstration, we'll decode it. THIS IS NOT SECURE.
-  const decoded = atob(encryptedData);
-  if (decoded.startsWith('encrypted_payload:')) {
-    return decoded.substring('encrypted_payload:'.length);
-  }
-  throw new Error("Invalid encrypted data format");
+  return new TextDecoder().decode(decryptedData);
 };
 
 const encryptionService = {

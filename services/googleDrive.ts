@@ -1,41 +1,84 @@
 
-// This is a placeholder for a real Google Drive service.
-// Full implementation requires a complex OAuth 2.0 flow, which involves
-// backend endpoints for handling redirects and securely storing tokens.
-// The frontend would use the Google API client library for JavaScript (gapi).
+const DRIVE_API_URL = 'https://www.googleapis.com/drive/v3';
+const DRIVE_UPLOAD_API_URL = 'https://www.googleapis.com/upload/drive/v3/files';
 
-const CLIENT_ID = '389413308274-mkkr1al93t5shm2b8rrsuf32htkl5mtf.apps.googleusercontent.com';
+const getFolderId = async (folderName: string, accessToken: string): Promise<string> => {
+    const response = await fetch(`${DRIVE_API_URL}/files?q=name='${folderName}' and mimeType='application/vnd.google-apps.folder'`, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+        },
+    });
 
-// Function to initiate OAuth flow
-const authenticate = async () => {
-  console.log('[STUB] Initiating Google Drive authentication...');
-  // This would typically redirect the user to Google's auth screen.
-  // After login, Google redirects back to a URI you've configured in your
-  // Google Cloud project, passing an authorization code. Your backend
-  // would then exchange this code for an access token and refresh token.
-  alert('In a real app, this would open the Google Sign-In flow.');
-  return { access_token: 'stub_access_token' };
+    if (!response.ok) {
+        throw new Error('Failed to search for folder in Google Drive');
+    }
+
+    const data = await response.json();
+    if (data.files.length > 0) {
+        return data.files[0].id;
+    } else {
+        const folderMetadata = {
+            name: folderName,
+            mimeType: 'application/vnd.google-apps.folder',
+        };
+
+        const createResponse = await fetch(`${DRIVE_API_URL}/files`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(folderMetadata),
+        });
+
+        if (!createResponse.ok) {
+            throw new Error('Failed to create folder in Google Drive');
+        }
+
+        const folderData = await createResponse.json();
+        return folderData.id;
+    }
 };
 
-// Function to upload a file
-const uploadFile = async (fileName: string, content: string): Promise<{id: string, name: string}> => {
-  console.log(`[STUB] Uploading file "${fileName}" to Google Drive.`);
-  // This would involve:
-  // 1. Checking for a valid access token.
-  // 2. Refreshing the token if it's expired.
-  // 3. Making a multipart upload request to the Google Drive API v3 endpoint.
-  //    (https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart)
-  // 4. Handling API responses and errors.
-  
-  // Returning a mock response.
-  return Promise.resolve({
-    id: `drive-file-${Math.random().toString(36).substring(7)}`,
-    name: fileName,
-  });
+const uploadFile = async (fileName: string, content: string, accessToken: string): Promise<{id: string, name: string}> => {
+    const folderId = await getFolderId('U3', accessToken);
+
+    const metadata = {
+        name: fileName,
+        parents: [folderId],
+    };
+
+    const multipartRequestBody =
+        `--foo_bar_baz\r\n` +
+        `Content-Type: application/json; charset=UTF-8\r\n\r\n` +
+        `${JSON.stringify(metadata)}\r\n` +
+        `--foo_bar_baz\r\n` +
+        `Content-Type: application/octet-stream\r\n\r\n` +
+        `${content}\r\n` +
+        `--foo_bar_baz--`;
+
+    const response = await fetch(`${DRIVE_UPLOAD_API_URL}?uploadType=multipart`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'multipart/related; boundary=foo_bar_baz',
+        },
+        body: multipartRequestBody,
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`Failed to upload file to Google Drive: ${error.error.message}`);
+    }
+
+    const data = await response.json();
+    return {
+        id: data.id,
+        name: data.name,
+    };
 };
 
 const googleDriveService = {
-  authenticate,
   uploadFile,
 };
 
