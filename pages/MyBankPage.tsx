@@ -12,7 +12,7 @@ import { useAuth } from '../hooks/useAuth';
 
 const MyBankPage: React.FC = () => {
   const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { user, session, logout } = useAuth();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -90,9 +90,14 @@ const MyBankPage: React.FC = () => {
           const encryptionKey = 'user-specific-strong-key';
           const encryptedContent = await encryptionService.encrypt(JSON.stringify(extractedData), encryptionKey);
           
+          if (!session?.provider_token) {
+            throw new Error('No Google provider token found. Please log in with Google.');
+          }
+
           const driveFile = await googleDriveService.uploadFile(
             `${selectedFile.name}.encrypted`,
-            encryptedContent
+            encryptedContent,
+            session.provider_token
           );
           
           const questionsToInsert = extractedData.map(q => ({
