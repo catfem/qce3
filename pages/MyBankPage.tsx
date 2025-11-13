@@ -5,6 +5,8 @@ import { PlusIcon, FileTextIcon, LoaderIcon, LockIcon } from '../components/icon
 import { Question } from '../types';
 import QuestionCard from '../components/QuestionCard';
 import geminiService from '../services/gemini';
+import encryptionService from '../services/encryption';
+import googleDriveService from '../services/googleDrive';
 import { supabase } from '../services/supabase';
 import { useAuth } from '../hooks/useAuth';
 
@@ -45,7 +47,8 @@ const MyBankPage: React.FC = () => {
           topic: q.topic,
           isPublic: q.is_public,
           createdAt: q.created_at,
-          authorId: q.author_id
+          authorId: q.author_id,
+          storageRef: q.storage_ref
         }));
         setQuestions(userQuestions);
       }
@@ -84,19 +87,19 @@ const MyBankPage: React.FC = () => {
           
           const extractedData = await geminiService.extractQuestionsFromFile(fileContent);
           
-          // const encryptionKey = 'user-specific-strong-key';
-          // const encryptedContent = await encryptionService.encrypt(JSON.stringify(extractedData), encryptionKey);
+          const encryptionKey = 'user-specific-strong-key';
+          const encryptedContent = await encryptionService.encrypt(JSON.stringify(extractedData), encryptionKey);
           
-          // const driveFile = await googleDriveService.uploadFile(
-          //   `${selectedFile.name}.encrypted`,
-          //   encryptedContent
-          // );
+          const driveFile = await googleDriveService.uploadFile(
+            `${selectedFile.name}.encrypted`,
+            encryptedContent
+          );
           
           const questionsToInsert = extractedData.map(q => ({
             ...q,
             is_public: false,
             author_id: user.id,
-            // storage_ref: driveFile.id,
+            storage_ref: driveFile.id,
           }));
 
           const { data: insertedQuestions, error: insertError } = await supabase
@@ -118,7 +121,8 @@ const MyBankPage: React.FC = () => {
                 topic: q.topic,
                 isPublic: q.is_public,
                 createdAt: q.created_at,
-                authorId: q.author_id
+                authorId: q.author_id,
+                storageRef: q.storage_ref
             }));
             setQuestions(prev => [...newQuestions, ...prev]);
           }

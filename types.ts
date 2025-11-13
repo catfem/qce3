@@ -14,6 +14,7 @@ export interface Question {
   isPublic: boolean;
   createdAt: string;
   authorId: string;
+  storageRef?: string;
 }
 
 export type Page = 'home' | 'my-bank' | 'open-bank' | 'dashboard' | 'settings';

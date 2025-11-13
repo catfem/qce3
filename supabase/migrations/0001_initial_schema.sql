@@ -16,7 +16,8 @@ CREATE TABLE questions (
     topic VARCHAR(100),
     is_public BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    author_id UUID REFERENCES users(id)
+    author_id UUID REFERENCES users(id),
+    storage_ref VARCHAR(255)
 );
 
 -- Function to handle new user creation
