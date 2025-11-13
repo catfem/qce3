@@ -1,0 +1,89 @@
+
+{
+  "appName": "AI 題庫",
+  "sidebar": {
+    "home": "首頁",
+    "myBank": "我的題庫",
+    "openBank": "公開題庫",
+    "dashboard": "儀表板",
+    "settings": "設定"
+  },
+  "home": {
+    "title": {
+      "line1": "用 AI 驅動的學習",
+      "line2": "解鎖您的知識"
+    },
+    "subtitle": "立即將您的文件轉換為互動式測驗。安全、私密，並由頂尖 AI 技術驅動。",
+    "cta": {
+      "primary": "開始使用",
+      "secondary": "運作方式"
+    },
+    "feature1": {
+      "title": "上傳任何文件",
+      "description": "輕鬆上傳包含您學習資料的 PDF、DOCX 或 TXT 文件。"
+    },
+    "feature2": {
+      "title": "即時 AI 擷取",
+      "description": "Gemini AI 會自動解析您的文件並擷取相關問題。"
+    },
+    "feature3": {
+      "title": "安全與隱私",
+      "description": "您的文件在客戶端加密，並安全地儲存在您自己的 Google 雲端硬碟中。"
+    },
+    "feature4": {
+      "title": "學習與分享",
+      "description": "學習您的私人問題，或探索公開題庫中的社群內容。"
+    }
+  },
+  "myBank": {
+    "title": "我的私人題庫",
+    "addQuestion": "手動新增",
+    "upload": {
+      "title": "從文件生成問題",
+      "description": "上傳一份文件，我們的 AI 將自動為您擷取問題。您的文件將被安全處理，絕不會儲存在我們的伺服器上。",
+      "cta": "上傳並生成",
+      "processing": "處理中..."
+    },
+    "empty": {
+      "title": "您的題庫是空的。",
+      "description": "上傳文件或手動新增問題以開始使用。"
+    }
+  },
+  "openBank": {
+    "title": "公開題庫",
+    "subtitle": "探索社群分享的大量問題。尋找新主題並測試您的知識。",
+    "searchPlaceholder": "搜尋主題、關鍵字...",
+    "empty": {
+      "title": "找不到問題。",
+      "description": "請嘗試不同的搜尋詞，或稍後再回來查看新內容。"
+    }
+  },
+  "dashboard": {
+    "title": "儀表板",
+    "stat1": { "title": "總問題數" },
+    "stat2": { "title": "完成的練習" },
+    "stat3": { "title": "正確率" },
+    "chart1": { "title": "本週活動" },
+    "chart2": { "title": "各主題問題分佈" },
+    "chartPlaceholder": "圖表數據將顯示於此。"
+  },
+  "settings": {
+    "title": "設定",
+    "account": { "title": "帳戶", "name": "全名", "email": "電子郵件地址" },
+    "integrations": { "title": "整合服務", "googleDrive": "Google 雲端硬碟", "connected": "已連接", "reauthorize": "重新授權" },
+    "language": { "title": "語言" },
+    "danger": { "title": "危險區域", "description": "刪除帳戶是永久性的，無法復原。", "cta": "刪除我的帳戶" }
+  },
+  "auth": {
+    "title": "歡迎來到 AI 題庫",
+    "subtitle": "登入以繼續您的個人化學習空間。",
+    "cta": "使用 Google 登入",
+    "loading": "登入中...",
+    "terms": {
+      "prefix": "登入即表示您同意我們的",
+      "termsLink": "服務條款",
+      "and": "和",
+      "privacyLink": "隱私政策"
+    }
+  }
+}

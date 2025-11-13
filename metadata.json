@@ -1,0 +1,5 @@
+{
+  "name": "AI Question Bank",
+  "description": "A GitHub-like question bank system powered by Gemini AI. It uses Supabase for the backend and allows users to save encrypted questions to their Google Drive. The system supports multiple languages and features a modern, glassmorphism-inspired UI.",
+  "requestFramePermissions": []
+}

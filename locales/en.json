@@ -1,0 +1,89 @@
+
+{
+  "appName": "AI Question Bank",
+  "sidebar": {
+    "home": "Home",
+    "myBank": "My Bank",
+    "openBank": "Open Bank",
+    "dashboard": "Dashboard",
+    "settings": "Settings"
+  },
+  "home": {
+    "title": {
+      "line1": "Unlock Your Knowledge with",
+      "line2": "AI-Powered Learning"
+    },
+    "subtitle": "Transform your documents into interactive quizzes instantly. Secure, private, and powered by cutting-edge AI.",
+    "cta": {
+      "primary": "Get Started",
+      "secondary": "How It Works"
+    },
+    "feature1": {
+      "title": "Upload Anything",
+      "description": "Easily upload PDF, DOCX, or TXT files containing your study materials."
+    },
+    "feature2": {
+      "title": "Instant AI Extraction",
+      "description": "Gemini AI automatically parses your documents and extracts relevant questions."
+    },
+    "feature3": {
+      "title": "Secure & Private",
+      "description": "Your files are client-side encrypted and stored securely in your own Google Drive."
+    },
+    "feature4": {
+      "title": "Learn & Share",
+      "description": "Study your private questions or explore the Open Bank for community content."
+    }
+  },
+  "myBank": {
+    "title": "My Private Bank",
+    "addQuestion": "Add Manually",
+    "upload": {
+      "title": "Generate Questions from a File",
+      "description": "Upload a document, and our AI will automatically extract questions for you. Your file is processed securely and is never stored on our servers.",
+      "cta": "Upload & Generate",
+      "processing": "Processing..."
+    },
+    "empty": {
+      "title": "Your question bank is empty.",
+      "description": "Upload a file or add a question manually to get started."
+    }
+  },
+  "openBank": {
+    "title": "Open Question Bank",
+    "subtitle": "Explore a vast collection of questions shared by the community. Find new topics and test your knowledge.",
+    "searchPlaceholder": "Search for topics, keywords...",
+    "empty": {
+      "title": "No questions found.",
+      "description": "Try a different search term or check back later for new content."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "stat1": { "title": "Total Questions" },
+    "stat2": { "title": "Sessions Completed" },
+    "stat3": { "title": "Correctness Rate" },
+    "chart1": { "title": "Activity This Week" },
+    "chart2": { "title": "Questions by Topic" },
+    "chartPlaceholder": "Chart data will be displayed here."
+  },
+  "settings": {
+    "title": "Settings",
+    "account": { "title": "Account", "name": "Full Name", "email": "Email Address" },
+    "integrations": { "title": "Integrations", "googleDrive": "Google Drive", "connected": "Connected", "reauthorize": "Re-authorize" },
+    "language": { "title": "Language" },
+    "danger": { "title": "Danger Zone", "description": "Deleting your account is permanent and cannot be undone.", "cta": "Delete My Account" }
+  },
+  "auth": {
+    "title": "Welcome to AI Question Bank",
+    "subtitle": "Sign in to continue to your personal learning space.",
+    "cta": "Sign in with Google",
+    "loading": "Signing in...",
+    "terms": {
+      "prefix": "By signing in, you agree to our",
+      "termsLink": "Terms of Service",
+      "and": "and",
+      "privacyLink": "Privacy Policy"
+    }
+  }
+}
