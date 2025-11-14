@@ -18,6 +18,14 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      }
+      },
+      css: {
+        postcss: {
+          plugins: [
+            require('tailwindcss'),
+            require('autoprefixer'),
+          ],
+        },
+      },
     };
 });
